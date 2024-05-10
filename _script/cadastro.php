@@ -10,6 +10,34 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $valor_venda = $_POST["valor_venda"];
     $quantidade = $_POST["quantidade"];
 
+    // Verifique se uma imagem foi enviada e a move para o diretório de imagens
+    $imagem_path = '';
+    if (isset($_FILES["imagem"]) && $_FILES["imagem"]["error"] == 0) {
+        // Verifica se o diretório imagens existe, se não, cria-o
+        $directory = __DIR__ . '/../imagens';
+        if (!file_exists($directory)) {
+            mkdir($directory, 0777, true);
+        }
+
+        // Constrói o caminho relativo para salvar a imagem
+        $imagem_temp = $_FILES["imagem"]["tmp_name"];
+        $imagem_nome = $_FILES["imagem"]["name"];
+        $imagem_extensao = strtolower(pathinfo($imagem_nome, PATHINFO_EXTENSION));
+        $imagem_path = 'imagens/' . uniqid('', true) . '.' . $imagem_extensao;
+
+        // Move o arquivo para o diretório de imagens
+        if (!move_uploaded_file($imagem_temp, $directory . '/' . basename($imagem_path))) {
+            echo "Erro ao mover a imagem para o diretório.";
+            exit();
+        }
+
+        // Mensagem de depuração para verificar o caminho da imagem
+        echo "Imagem salva em: " . $imagem_path;
+    } else {
+        echo "Erro: Nenhuma imagem foi enviada ou ocorreu um erro durante o upload.";
+        exit();
+    }
+
     // Verifica se já existe uma peça com o mesmo nome e fornecedor no banco de dados
     $sql_check = "SELECT * FROM Pecas WHERE Nome_Peca = ? AND Fornecedor = ?";
     $stmt_check = $conn->prepare($sql_check);
@@ -34,9 +62,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         exit();
     } else {
         // Se não existir, insira uma nova peça
-        $sql_insert = "INSERT INTO Pecas (Nome_Peca, Fornecedor, Valor_Compra, Valor_Venda, Quantidade) VALUES (?, ?, ?, ?, ?)";
+        $sql_insert = "INSERT INTO Pecas (Nome_Peca, Fornecedor, Valor_Compra, Valor_Venda, Quantidade, Imagem) VALUES (?, ?, ?, ?, ?, ?)";
         $stmt_insert = $conn->prepare($sql_insert);
-        $stmt_insert->bind_param("sssdd", $nome, $fornecedor, $valor_compra, $valor_venda, $quantidade);
+        $stmt_insert->bind_param("sssdds", $nome, $fornecedor, $valor_compra, $valor_venda, $quantidade, $imagem_path);
         if ($stmt_insert->execute()) {
             // Redireciona de volta para a página de cadastro de peças
             header("Location: cadastro_pecas.php");
@@ -52,5 +80,4 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $stmt_update->close();
     $conn->close();
 }
-
 ?>

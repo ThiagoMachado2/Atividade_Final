@@ -1,11 +1,9 @@
 <?php
 include '_script/lista.php';
 ?>
-
 <span style="font-family: verdana, geneva, sans-serif;">
   <!DOCTYPE html>
   <html lang="pt-br">
-
   <head>
     <meta charset="UTF-8" />
     <title>Dashboard | By Code Info</title>
@@ -17,8 +15,10 @@ include '_script/lista.php';
     <!-- Slick Carousel -->
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.css" />
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"></script>
+    <script src="js/carousel.js"></script>
+    <script src="js/cart.js"></script>
+    <script src="js/ajax.js"></script>
   </head>
-
   <body>
     <div class="container">
       <nav>
@@ -45,13 +45,11 @@ include '_script/lista.php';
             </a></li>
         </ul>
       </nav>
-
       <section class="main">
         <div class="main-top">
           <h1>Produtos</h1>
           <i class="fas fa-user-cog"></i>
         </div>
-
         <div class="main-skills">
           <div class="carousel">
             <div class="card">
@@ -99,7 +97,6 @@ include '_script/lista.php';
             });
           });
         </script>
-
         <section class="main-course">
           <h1>Listagem das Peças em Estoque</h1>
           <div class="course-box">
@@ -139,13 +136,10 @@ include '_script/lista.php';
         </section>
     </div>
   </body>
-
   </html>
-
   <?php
   // Fecha a conexão com o banco de dados
   $conn->close();
   ?>
-
   </html>
 </span>

@@ -266,3 +266,10 @@ a:hover {
     right: 0;
 }
 
+
+.card .card-image img {
+  width: 100%;
+  height: auto;
+  margin: 0 auto 10px; /* Adicione margin para centralizar a imagem e deixar espaço abaixo */
+  display: block;
+}
