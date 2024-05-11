@@ -39,3 +39,11 @@ CREATE TABLE IF NOT EXISTS Carrinho (
     Total_Item DECIMAL(10, 2),
     FOREIGN KEY (Cod_Peca) REFERENCES Pecas(Cod_Peca)
 );
+
+CREATE TABLE IF NOT EXISTS Events(
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(255),
+    color VARCHAR(45),
+    start DATETIME,
+    end DATETIME
+)

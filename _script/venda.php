@@ -1,6 +1,9 @@
 <?php
 include 'database.php';
 
+// Definir o fuso horário para São Paulo
+date_default_timezone_set('America/Sao_Paulo');
+
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['cart_items'])) {
     $cart_items = json_decode($_POST['cart_items'], true);
     $data_venda = date("Y-m-d");
@@ -50,12 +53,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['cart_items'])) {
         }
 
         echo "Venda concluída com sucesso!";
-    } catch (Exception $e) {
-        $conn->rollback();
-        echo "Erro ao processar a venda: " . $e->getMessage();
-    }
-} else {
-    echo "Nenhum item no carrinho.";
-}
+           // Inserir evento de venda na tabela Events
+           $title = "Venda de " . $item['nome_peca'];
+           $start = date("Y-m-d H:i:s"); // Utilize a data da venda como data de início
+           $end = date("Y-m-d H:i:s"); // Utilize a data da venda como data de término
+           $color = "green"; // Defina a cor para o evento de venda
+           $stmt = $conn->prepare("INSERT INTO Events (title, color, start, end) VALUES (?, ?, ?, ?)");
+           $stmt->bind_param("ssss", $title, $color, $start, $end);
+           $stmt->execute();
+           
+       } catch (Exception $e) {
+           $conn->rollback();
+           echo "Erro ao processar a venda: " . $e->getMessage();
+       }
+   } else {
+       echo "Nenhum item no carrinho.";
+   }
 
 ?>

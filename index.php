@@ -14,9 +14,12 @@
     <!-- Slick Carousel -->
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.css" />
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js"></script>
     <script src="js/carousel.js"></script>
     <script src="js/cart.js"></script>
     <script src="js/ajax.js"></script>
+    <script src="js/calendario.js"></script>
   </head>
   <body>
     <div class="container">
@@ -44,50 +47,45 @@
             </a></li>
         </ul>
       </nav>
-
       <section class="main">
         <div class="main-top">
           <h1>Produtos</h1>
           <i class="fas fa-cart-shopping"></i>
         </div>
-
         <div class="main-skills">
-          <div class="carousel">
-            <div class="card">
-              <img src="caminho_da_sua_imagem.jpg" alt="Imagem do Produto">
-              <h3>Nome do Produto</h3>
-              <p>R$ 10,00</p>
-            </div>
-            <div class="card">
-              <img src="caminho_da_sua_imagem.jpg" alt="Imagem do Produto">
-              <h3>Nome do Produto</h3>
-              <p>R$ 10,00</p>
-            </div>
-            <div class="card">
-              <img src="caminho_da_sua_imagem.jpg" alt="Imagem do Produto">
-              <h3>Nome do Produto</h3>
-              <p>R$ 10,00</p>
-            </div>
-            <div class="card">
-              <img src="caminho_da_sua_imagem.jpg" alt="Imagem do Produto">
-              <h3>Nome do Produto</h3>
-              <p>R$ 10,00</p>
-            </div>
-            <div class="card">
-              <img src="caminho_da_sua_imagem.jpg" alt="Imagem do Produto">
-              <h3>Nome do Produto</h3>
-              <p>R$ 10,00</p>
-            </div>
-            <button class="prev">Anterior</button>
-            <button class="next">Próximo</button>
-          </div>
+        <div class="carousel">
+        <?php
+        include '_script/database.php';
+
+        // Recupera todas as peças do banco de dados
+        $sql2 = "SELECT * FROM Pecas";
+        $result2 = $conn->query($sql2);
+
+        // Verifica se há resultados
+        if ($result2->num_rows> 0) {
+          // Exibe os cards para cada peça
+          while ($row2 = $result2->fetch_assoc()) {
+            echo '<div class="card">';
+            echo '<div class="card-image">'; // Adiciona a classe card-image aqui
+            echo '<img src="'  . $row2["Imagem"] . '" alt="' . $row2["Nome_Peca"] . '" >';
+            echo '</div>';
+            echo '<h3>' . $row2["Nome_Peca"] . '</h3>';
+            echo '<p>R$ ' . $row2["Valor_Venda"] . '</p>';
+            echo '</div>';
+          }
+        } else {
+          echo "Nenhuma peça encontrada.";
+        }
+      
+        ?>
+      </div>
         </div>
         <section class="main-course">
           <h1>Tela de finalização da compra</h1>
           <div class="course-box">
             <form action="_script/venda.php" method="post" id="cart-form">
               <!-- Selecione a peça -->
-              <label for="codigo_peca">Selecione a peça:</label>
+              <label class="label-v" for="codigo_peca">Selecione a peça:</label>
               <select id="codigo_peca" name="codigo_peca[]" required>
                 <option value="">Selecione...</option>
                 <?php
@@ -102,29 +100,30 @@
                 }
                 ?>
               </select>
-              <label for="nome_peca">Nome da Peça:</label>
-              <input type="text" id="nome_peca" name="nome_peca[]" readonly>
-              <label for="valor_venda">Valor de Venda:</label>
+              <label class="label-v" for="nome_peca">Nome da Peça:</label>
+              <input class="input-v" type="text" id="nome_peca" name="nome_peca[]" readonly>
+              <label class="label-v" for="valor_venda">Valor de Venda:</label>
               <input type="number" id="valor_venda" name="valor_venda[]" step="0.01" readonly>
-              <label for="quantidade">Quantidade:</label>
-              <input type="number" id="quantidade" name="quantidade[]" required>
+              <label class="label-v" for="quantidade">Quantidade:</label>
+              <input class="input-v" type="number" id="quantidade" name="quantidade[]" required>
+
+              <!-- Contêiner para exibir os itens no carrinho -->
+              <div id="cart-items">
+                <!-- Os itens do carrinho serão adicionados aqui dinamicamente -->
+              </div>
+              <!-- Exibir o total da compra -->
+              <div id="total-compra"></div>
 
               <!-- Botão Adicionar ao Carrinho -->
-              <button type="button" id="add-to-cart">Adicionar ao Carrinho</button>
+              <button class="btn-v" type="button" id="add-to-cart">Adicionar ao Carrinho</button>
 
               <!-- Botão Finalizar Compra -->
-              <button type="submit" id="finalizar-compra">Finalizar Compra</button>
+              <button class="btn-v" type="submit" id="finalizar-compra">Finalizar Compra</button>
             </form>
 
-            <!-- Contêiner para exibir os itens no carrinho -->
-            <div id="cart-items">
-              <!-- Os itens do carrinho serão adicionados aqui dinamicamente -->
-            </div>
-            <!-- Exibir o total da compra -->
-            <div id="total-compra"></div>
-          
         </section>
       </section>
   </body>
+
   </html>
 </span>

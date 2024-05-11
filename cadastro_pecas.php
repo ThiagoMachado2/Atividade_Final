@@ -21,7 +21,7 @@
       <nav>
         <ul>
           <li><a href="#" class="logo">
-              <img src="imagens/logo2.webp" alt="">
+              <img src="img/logo2.webp" alt="">
               <span class="nav-item">Autopeças</span>
             </a></li>
           <li><a href="index.php">
@@ -36,7 +36,7 @@
               <i class="fas fa-list"></i>
               <span class="nav-item">Estoque</span>
             </a></li>
-          <li><a href="calandario.php">
+          <li><a href="calendario.php">
               <i class="fas fa-calendar"></i>
               <span class="nav-item">Calendario</span>
             </a></li>
@@ -75,12 +75,10 @@
         $conn->close();
         ?>
       </div>
-      <button class="prev">Anterior</button>
-      <button class="next">Próximo</button>
         </div>
         <section class="main-course">
           <h1>Cadastro de Peças</h1>
-          <div class="course-box">
+          <div class="course-box-cad">
             <form action="_script/cadastro.php" method="post" enctype="multipart/form-data">
               <label for="nome">Nome da Peça:</label>
               <input type="text" id="nome" name="nome" required>

@@ -1,6 +1,9 @@
 <?php
 include 'database.php';
 
+// Definir o fuso horário para São Paulo
+date_default_timezone_set('America/Sao_Paulo');
+
 // Verifica se o formulário foi submetido
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Prepara os dados para inserção
@@ -10,29 +13,33 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $valor_venda = $_POST["valor_venda"];
     $quantidade = $_POST["quantidade"];
 
-    // Verifique se uma imagem foi enviada e a move para o diretório de imagens
+    // Verifica se uma imagem foi enviada e a move para o diretório de imagens
     $imagem_path = '';
     if (isset($_FILES["imagem"]) && $_FILES["imagem"]["error"] == 0) {
-        // Verifica se o diretório imagens existe, se não, cria-o
-        $directory = __DIR__ . '/../imagens';
-        if (!file_exists($directory)) {
-            mkdir($directory, 0777, true);
-        }
+        // Verifica se o tipo de arquivo é PNG
+        $imagem_info = getimagesize($_FILES["imagem"]["tmp_name"]);
+        if ($imagem_info !== false && $imagem_info["mime"] == "image/png") {
+            // Define o caminho completo para o diretório de imagens
+            $directory = __DIR__ . '/../imagens';
 
-        // Constrói o caminho relativo para salvar a imagem
-        $imagem_temp = $_FILES["imagem"]["tmp_name"];
-        $imagem_nome = $_FILES["imagem"]["name"];
-        $imagem_extensao = strtolower(pathinfo($imagem_nome, PATHINFO_EXTENSION));
-        $imagem_path = 'imagens/' . uniqid('', true) . '.' . $imagem_extensao;
+            // Constrói o caminho relativo para salvar a imagem
+            $imagem_temp = $_FILES["imagem"]["tmp_name"];
+            $imagem_nome = $_FILES["imagem"]["name"];
+            $imagem_extensao = strtolower(pathinfo($imagem_nome, PATHINFO_EXTENSION));
+            $imagem_path = 'imagens/' . uniqid('', true) . '.' . $imagem_extensao;
 
-        // Move o arquivo para o diretório de imagens
-        if (!move_uploaded_file($imagem_temp, $directory . '/' . basename($imagem_path))) {
-            echo "Erro ao mover a imagem para o diretório.";
+            // Move o arquivo para o diretório de imagens
+            if (!move_uploaded_file($imagem_temp, $directory . '/' . basename($imagem_path))) {
+                echo "Erro ao mover a imagem para o diretório.";
+                exit();
+            }
+
+            // Mensagem de depuração para verificar o caminho da imagem
+            echo "Imagem salva em: " . $imagem_path;
+        } else {
+            echo "Erro: Apenas arquivos PNG são permitidos.";
             exit();
         }
-
-        // Mensagem de depuração para verificar o caminho da imagem
-        echo "Imagem salva em: " . $imagem_path;
     } else {
         echo "Erro: Nenhuma imagem foi enviada ou ocorreu um erro durante o upload.";
         exit();
@@ -66,8 +73,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $stmt_insert = $conn->prepare($sql_insert);
         $stmt_insert->bind_param("sssdds", $nome, $fornecedor, $valor_compra, $valor_venda, $quantidade, $imagem_path);
         if ($stmt_insert->execute()) {
-            // Redireciona de volta para a página de cadastro de peças
-            header("Location: cadastro_pecas.php");
+
+            // Inserir evento de cadastro na tabela Events
+            $title = $_POST['nome'] . " foi cadastrada";
+            $start = date("Y-m-d H:i:s"); // Utilize a data atual como data de início
+            $end = date("Y-m-d H:i:s"); // Utilize a data atual como data de término
+            $color = "blue"; // Defina a cor para o evento de cadastro
+            $stmt = $conn->prepare("INSERT INTO Events (title, color, start, end) VALUES (?, ?, ?, ?)");
+            $stmt->bind_param("ssss", $title, $color, $start, $end);
+            $stmt->execute();
+
+            // Redireciona para a mesma página para atualizar
+            header("Location: " . $_SERVER['PHP_SELF']);
             exit();
         } else {
             echo "Erro ao cadastrar a peça: " . $stmt_insert->error;
@@ -80,4 +97,5 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $stmt_update->close();
     $conn->close();
 }
+
 ?>

@@ -23,7 +23,19 @@ nav {
   position: relative;
   top: 0;
   bottom: 0;
-  height: 100vh;
+  height: 150vh;
+  left: 0;
+  background: #fff;
+  width: 280px;
+  overflow: hidden;
+  box-shadow: 0 20px 35px rgba(0, 0, 0, 0.1);
+}
+
+.nav-calendar {
+  position: relative;
+  top: 0;
+  bottom: 0;
+  height: 150vh;
   left: 0;
   background: #fff;
   width: 280px;
@@ -156,8 +168,11 @@ a:hover {
 }
 
 .course-box {
+  margin: 0 auto;
+  padding: 20px; /* Adicione algum preenchimento interno para separar o formulário das bordas */
+  border: 1px solid #ddd; /* Adicione uma borda para uma melhor visualização */
   width: 100%;
-  height: 300px;
+  height: 650px;
   padding: 10px 10px 30px 10px;
   margin-top: 10px;
   background: #fff;
@@ -267,9 +282,161 @@ a:hover {
 }
 
 
+.card .card-image {
+  width: 40%; /* Garante que a imagem ocupe toda a largura do card */
+  height: 135px; /* Altura fixa para o card */
+  overflow: hidden; /* Oculta qualquer parte da imagem que exceda as dimensões do card */
+  margin: 0 auto;
+}
+
 .card .card-image img {
+  max-width: 100%; /* Define a largura máxima da imagem como 100% do contêiner pai */
+  height: auto; /* Garante que a altura seja ajustada automaticamente para manter a proporção */
+  display: block; /* Garante que a imagem não tenha espaços em branco abaixo */
+  margin: 0 auto; /* Centraliza a imagem horizontalmente */
+}
+
+.card h3,
+.card p {
+  margin: 5px 0; /* Adiciona um pequeno espaçamento entre o texto e a imagem */
+}
+
+.course-box-calendar{
   width: 100%;
-  height: auto;
-  margin: 0 auto 10px; /* Adicione margin para centralizar a imagem e deixar espaço abaixo */
+  padding: 10px 10px 30px 10px;
+  margin-top: 10px;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 20px 35px rgba(0, 0, 0, 0.1);
+}
+
+
+
+#calendar {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  border: 1px solid #ddd;
+  margin-bottom: 20px;
+}
+
+th, td {
+  text-align: left;
+  padding: 8px;
+}
+
+th {
+  background-color: #f2f2f2;
+  color: #333;
+}
+
+tbody tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+tbody tr:hover {
+  background-color: #ddd;
+}
+
+form {
+  max-width: 100%; /* Para garantir que o formulário não exceda a largura da course-box */
+}
+
+.course-box-cad {
+  margin: 0 auto;
+  padding: 20px; /* Adicione algum preenchimento interno para separar o formulário das bordas */
+  border: 1px solid #ddd; /* Adicione uma borda para uma melhor visualização */
+  width: 100%;
+  height: 550px;
+  padding: 10px 10px 30px 10px;
+  margin-top: 10px;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 20px 35px rgba(0, 0, 0, 0.1);
+}
+
+label {
   display: block;
+  margin-bottom: 5px;
+}
+
+input[type="text"],
+input[type="number"],
+input[type="file"],
+button {
+  width: calc(100% - 16px); /* Leve em consideração o preenchimento interno (8px em cada lado) */
+  padding: 8px;
+  margin-bottom: 10px;
+  box-sizing: border-box;
+  background-color: #fff;
+  color: #333;
+  border: 1px solid #ccc
+}
+
+button {
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #45a049;
+}
+
+#cart-form {
+  max-width: 100%; /* Garante que o formulário não exceda a largura da course-box */
+}
+
+
+
+.label-v{
+  display: block;
+  margin-bottom: 10px;
+  font-weight: bold; /* Deixa os rótulos em negrito */
+}
+select,
+.input-v{
+  width: calc(100% - 20px); /* Leva em consideração o preenchimento interno */
+  padding: 8px;
+  margin-bottom: 15px;
+  box-sizing: border-box;
+  border: 1px solid #ccc;
+  border-radius: 5px; /* Adiciona bordas arredondadas */
+}
+
+.btn-v{
+  width: 100%;
+  padding: 10px;
+  margin-top: 15px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 5px; /* Adiciona bordas arredondadas */
+  cursor: pointer;
+}
+
+.btn-v:hover{
+  background-color: #45a049;
+}
+
+#cart-items {
+  margin-top: 20px;
+}
+
+.cart-item {
+  margin-bottom: 10px;
+}
+
+.cart-item span {
+  font-weight: bold;
+}
+
+#total-compra {
+  margin-top: 20px;
+  margin-bottom: 30px; /* Adiciona margem inferior para separação dos botões */
+  font-weight: bold;
 }
