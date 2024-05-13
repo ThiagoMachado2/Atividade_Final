@@ -1,34 +1,75 @@
 <?php
-include '_script/database.php';
+include 'database.php';
 
-$erro = null;
-$total_venda = 0;
+// Definir o fuso horário para São Paulo
+date_default_timezone_set('America/Sao_Paulo');
 
-if (isset($_POST['quantidade_vendida']) && isset($_POST['id_peca'])) {
-    $quantidade_vendida = $_POST['quantidade_vendida'];
-    $id_peca = $_POST['id_peca'];
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['cart_items'])) {
+    $cart_items = json_decode($_POST['cart_items'], true);
+    $data_venda = date("Y-m-d");
 
-    $sql = "SELECT * FROM pecas WHERE id = ?";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("i", $id_peca);
-    $stmt->execute();
-    $result = $stmt->get_result();
-    $row = $result->fetch_assoc();
+    $conn->begin_transaction();
 
-    $preco_peca = $row['preco'];
-
-    if ($row['quantidade'] >= $quantidade_vendida) {
-        $total_venda = $quantidade_vendida * $preco_peca;
-        $sql = "UPDATE pecas SET quantidade = quantidade - ? WHERE id = ?";
-        $stmt = $conn->prepare($sql);
-        $stmt->bind_param("ii", $quantidade_vendida, $id_peca);
+    try {
+        // Inserir a venda na tabela Vendas
+        $total_venda = 0;
+        foreach ($cart_items as $item) {
+            $total_venda += $item['total'];
+        }
+        $stmt = $conn->prepare("INSERT INTO Vendas (Data_Venda, Total) VALUES (?, ?)");
+        $stmt->bind_param("sd", $data_venda, $total_venda);
         $stmt->execute();
+        $cod_venda = $stmt->insert_id;
 
-        header('Location: index.php');
-    } else {
-        $erro = 'Quantidade insuficiente para a venda';
-    }
-}
+        // Inserir os itens da venda na tabela Itens_Venda
+        foreach ($cart_items as $item) {
+            $stmt = $conn->prepare("INSERT INTO Itens_Venda (Cod_Venda, Cod_Peca, Nome_Peca, Valor_Venda, Quantidade, Total_Item) VALUES (?, ?, ?, ?, ?, ?)");
+            $stmt->bind_param("iisdsd", $cod_venda, $item['cod_peca'], $item['nome_peca'], $item['valor_venda'], $item['quantidade'], $item['total']);
+            $stmt->execute();
+        }
+
+        $conn->commit();
+        // Após a confirmação da venda, atualizar o estoque na tabela Pecas
+        foreach ($cart_items as $item) {
+            // Verificar se a chave 'cod_peca' está definida em $item
+            if (isset($item['cod_peca'])) {
+                $cod_peca = $item['cod_peca'];
+
+                // Verificar se a chave 'quantidade' está definida em $item
+                $quantidade_vendida = isset($item['quantidade']) ? $item['quantidade'] : 0;
+
+                $stmt = $conn->prepare("UPDATE Pecas SET Quantidade = Quantidade - ? WHERE Cod_Peca = ?");
+                $stmt->bind_param("ii", $quantidade_vendida, $cod_peca);
+                if ($stmt->execute()) {
+                    echo "Quantidade do item " . $cod_peca . " atualizada com sucesso!<br>";
+                } else {
+                    echo "Erro ao atualizar a quantidade do item " . $cod_peca . ": " . $conn->error . "<br>";
+                }
+            } else {
+                // Se 'cod_peca' não estiver definida, exibir um erro e pular este item
+                echo "Erro: chave 'cod_peca' não está definida no item.<br>";
+                continue;
+            }
+        }
+
+        echo "Venda concluída com sucesso!";
+           // Inserir evento de venda na tabela Events
+           $title = "Venda de " . $item['nome_peca'];
+           $start = date("Y-m-d H:i:s"); // Utilize a data da venda como data de início
+           $end = date("Y-m-d H:i:s"); // Utilize a data da venda como data de término
+           $color = "green"; // Defina a cor para o evento de venda
+           $stmt = $conn->prepare("INSERT INTO Events (title, color, start, end) VALUES (?, ?, ?, ?)");
+           $stmt->bind_param("ssss", $title, $color, $start, $end);
+           $stmt->execute();
+           
+       } catch (Exception $e) {
+           $conn->rollback();
+           echo "Erro ao processar a venda: " . $e->getMessage();
+       }
+   } else {
+       echo "Nenhum item no carrinho.";
+   }
+
 ?>
 
 ////////////////////////////////////////////////////////

@@ -42,6 +42,32 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['cart_items'])) {
                 $stmt->bind_param("ii", $quantidade_vendida, $cod_peca);
                 if ($stmt->execute()) {
                     echo "Quantidade do item " . $cod_peca . " atualizada com sucesso!<br>";
+
+                    // Verificar se a quantidade da peça chegou a zero após a venda
+                    $sql_check_quantity = "SELECT Quantidade FROM Pecas WHERE Cod_Peca = ?";
+                    $stmt_check_quantity = $conn->prepare($sql_check_quantity);
+                    $stmt_check_quantity->bind_param("i", $cod_peca);
+                    $stmt_check_quantity->execute();
+                    $result_check_quantity = $stmt_check_quantity->get_result();
+                    $row_check_quantity = $result_check_quantity->fetch_assoc();
+                    $quantity_after_sale = $row_check_quantity['Quantidade'];
+
+                    if ($quantity_after_sale == 0) {
+                        // Excluir os registros na tabela Itens_Venda relacionados a esta peça
+                        $stmt_delete_items = $conn->prepare("DELETE FROM Itens_Venda WHERE Cod_Peca = ?");
+                        $stmt_delete_items->bind_param("i", $cod_peca);
+                        $stmt_delete_items->execute();
+
+                        // Excluir a peça do banco de dados
+                        $sql_delete_piece = "DELETE FROM Pecas WHERE Cod_Peca = ?";
+                        $stmt_delete_piece = $conn->prepare($sql_delete_piece);
+                        $stmt_delete_piece->bind_param("i", $cod_peca);
+                        if ($stmt_delete_piece->execute()) {
+                            echo "Peça com o código " . $cod_peca . " removida do banco de dados.";
+                        } else {
+                            echo "Erro ao remover a peça do banco de dados.";
+                        }
+                    }
                 } else {
                     echo "Erro ao atualizar a quantidade do item " . $cod_peca . ": " . $conn->error . "<br>";
                 }
@@ -53,21 +79,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['cart_items'])) {
         }
 
         echo "Venda concluída com sucesso!";
-           // Inserir evento de venda na tabela Events
-           $title = "Venda de " . $item['nome_peca'];
-           $start = date("Y-m-d H:i:s"); // Utilize a data da venda como data de início
-           $end = date("Y-m-d H:i:s"); // Utilize a data da venda como data de término
-           $color = "green"; // Defina a cor para o evento de venda
-           $stmt = $conn->prepare("INSERT INTO Events (title, color, start, end) VALUES (?, ?, ?, ?)");
-           $stmt->bind_param("ssss", $title, $color, $start, $end);
-           $stmt->execute();
-           
-       } catch (Exception $e) {
-           $conn->rollback();
-           echo "Erro ao processar a venda: " . $e->getMessage();
-       }
-   } else {
-       echo "Nenhum item no carrinho.";
-   }
-
+        // Inserir evento de venda na tabela Events
+        $title = "Venda de " . $item['nome_peca'];
+        $start = date("Y-m-d H:i:s"); // Utilize a data da venda como data de início
+        $end = date("Y-m-d H:i:s"); // Utilize a data da venda como data de término
+        $color = "green"; // Defina a cor para o evento de venda
+        $stmt = $conn->prepare("INSERT INTO Events (title, color, start, end) VALUES (?, ?, ?, ?)");
+        $stmt->bind_param("ssss", $title, $color, $start, $end);
+        $stmt->execute();
+        
+    } catch (Exception $e) {
+        $conn->rollback();
+        echo "Erro ao processar a venda: " . $e->getMessage();
+    }
+} else {
+    echo "Nenhum item no carrinho.";
+}
 ?>

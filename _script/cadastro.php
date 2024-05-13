@@ -1,6 +1,5 @@
 <?php
 include 'database.php';
-
 // Definir o fuso horário para São Paulo
 date_default_timezone_set('America/Sao_Paulo');
 
@@ -16,28 +15,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Verifica se uma imagem foi enviada e a move para o diretório de imagens
     $imagem_path = '';
     if (isset($_FILES["imagem"]) && $_FILES["imagem"]["error"] == 0) {
-        // Verifica se o tipo de arquivo é PNG
-        $imagem_info = getimagesize($_FILES["imagem"]["tmp_name"]);
-        if ($imagem_info !== false && $imagem_info["mime"] == "image/png") {
-            // Define o caminho completo para o diretório de imagens
-            $directory = __DIR__ . '/../imagens';
+        // Define o caminho completo para o diretório de imagens
+        $directory = __DIR__ . '/../imagens';
 
-            // Constrói o caminho relativo para salvar a imagem
-            $imagem_temp = $_FILES["imagem"]["tmp_name"];
-            $imagem_nome = $_FILES["imagem"]["name"];
-            $imagem_extensao = strtolower(pathinfo($imagem_nome, PATHINFO_EXTENSION));
-            $imagem_path = 'imagens/' . uniqid('', true) . '.' . $imagem_extensao;
+        // Constrói o caminho para salvar a imagem com o nome original do arquivo
+        $imagem_nome = $_FILES["imagem"]["name"];
+        $imagem_path = 'imagens/' . $imagem_nome;
 
-            // Move o arquivo para o diretório de imagens
-            if (!move_uploaded_file($imagem_temp, $directory . '/' . basename($imagem_path))) {
-                echo "Erro ao mover a imagem para o diretório.";
-                exit();
-            }
-
-            // Mensagem de depuração para verificar o caminho da imagem
-            echo "Imagem salva em: " . $imagem_path;
-        } else {
-            echo "Erro: Apenas arquivos PNG são permitidos.";
+        // Move o arquivo para o diretório de imagens
+        if (!move_uploaded_file($_FILES["imagem"]["tmp_name"], $directory . '/' . $imagem_nome)) {
+            echo "Erro ao mover a imagem para o diretório.";
             exit();
         }
     } else {
@@ -53,49 +40,61 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $result_check = $stmt_check->get_result();
 
     if ($result_check->num_rows > 0) {
-        // Se já existir, atualize a quantidade em estoque
+        // Se já existir, permitir atualizar os valores de compra, venda e quantidade
         $row = $result_check->fetch_assoc();
         $cod_peca = $row['Cod_Peca'];
-        $quantidade_total = $row['Quantidade'] + $quantidade;
+        $quantidade_total = $row['Quantidade'] + $quantidade; // Nova quantidade total
 
-        // Query SQL para atualizar a quantidade em estoque
-        $sql_update = "UPDATE Pecas SET Quantidade = ? WHERE Cod_Peca = ?";
+        // Query SQL para atualizar os valores de compra, venda e quantidade
+        $sql_update = "UPDATE Pecas SET Valor_Compra = ?, Valor_Venda = ?, Quantidade = ? WHERE Cod_Peca = ?";
         $stmt_update = $conn->prepare($sql_update);
-        $stmt_update->bind_param("ii", $quantidade_total, $cod_peca);
-        $stmt_update->execute();
+        $stmt_update->bind_param("ddii", $valor_compra, $valor_venda, $quantidade_total, $cod_peca);
+        if ($stmt_update->execute()) {
+            echo "Valores de compra, venda e quantidade atualizados com sucesso para a peça existente.";
 
-        // Redireciona de volta para a página de cadastro de peças
-        header("Location: cadastro_pecas.php");
-        exit();
+            // Inserir evento de atualização na tabela Events
+            $title = "$nome foi atualizado";
+            $start = date("Y-m-d H:i:s"); // Utilize a data atual como data de início
+            $end = date("Y-m-d H:i:s"); // Utilize a data atual como data de término
+            $color = "blue"; // Defina a cor para o evento de atualização
+            $stmt_event = $conn->prepare("INSERT INTO Events (title, color, start, end) VALUES (?, ?, ?, ?)");
+            $stmt_event->bind_param("ssss", $title, $color, $start, $end);
+            $stmt_event->execute();
+
+            // Redireciona após atualizar os valores
+            header("Location: /Atividade_Final/cadastro_pecas.php");
+            exit();
+        } else {
+            echo "Erro ao atualizar os valores de compra, venda e quantidade: " . $stmt_update->error;
+        }
     } else {
         // Se não existir, insira uma nova peça
         $sql_insert = "INSERT INTO Pecas (Nome_Peca, Fornecedor, Valor_Compra, Valor_Venda, Quantidade, Imagem) VALUES (?, ?, ?, ?, ?, ?)";
         $stmt_insert = $conn->prepare($sql_insert);
         $stmt_insert->bind_param("sssdds", $nome, $fornecedor, $valor_compra, $valor_venda, $quantidade, $imagem_path);
         if ($stmt_insert->execute()) {
+            echo "Peça cadastrada com sucesso!";
 
             // Inserir evento de cadastro na tabela Events
-            $title = $_POST['nome'] . " foi cadastrada";
+            $title = "$nome foi cadastrado";
             $start = date("Y-m-d H:i:s"); // Utilize a data atual como data de início
             $end = date("Y-m-d H:i:s"); // Utilize a data atual como data de término
             $color = "blue"; // Defina a cor para o evento de cadastro
-            $stmt = $conn->prepare("INSERT INTO Events (title, color, start, end) VALUES (?, ?, ?, ?)");
-            $stmt->bind_param("ssss", $title, $color, $start, $end);
-            $stmt->execute();
+            $stmt_event = $conn->prepare("INSERT INTO Events (title, color, start, end) VALUES (?, ?, ?, ?)");
+            $stmt_event->bind_param("ssss", $title, $color, $start, $end);
+            $stmt_event->execute();
 
-            // Redireciona para a mesma página para atualizar
-            header("Location: " . $_SERVER['PHP_SELF']);
+            // Redireciona após cadastrar a peça
+            header("Location: /Atividade_Final/cadastro_pecas.php");
             exit();
         } else {
             echo "Erro ao cadastrar a peça: " . $stmt_insert->error;
         }
     }
-
     // Fecha a declaração e a conexão com o banco de dados
     $stmt_check->close();
     $stmt_insert->close();
     $stmt_update->close();
     $conn->close();
 }
-
 ?>

@@ -16,6 +16,8 @@ include '_script/lista.php';
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.css" />
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert2/11.1.2/sweetalert2.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="js/carousel.js"></script>
     <script src="js/cart.js"></script>
     <script src="js/ajax.js"></script>
@@ -52,13 +54,13 @@ include '_script/lista.php';
           <h1>Produtos</h1>
           <i class="fas fa-user-cog"></i>
         </div>
-        
         <section class="main-course">
           <h1>Listagem das Peças em Estoque</h1>
           <div class="course-box">
             <table>
               <thead>
                 <tr>
+                  <th>Imagem</th> <!-- Nova coluna para a imagem -->
                   <th>Nome da Peça</th>
                   <th>Fornecedor</th>
                   <th>Valor de Compra</th>
@@ -68,12 +70,14 @@ include '_script/lista.php';
               </thead>
               <tbody>
                 <?php
-                // Verifica se há linhas retornadas pela consulta
+                // Verificar se há linhas retornadas pela consulta
                 if ($result && $result->num_rows > 0) {
                   // Loop através das linhas retornadas
                   while ($row = $result->fetch_assoc()) {
-                    // Exibe os dados da peça em cada linha da tabela
+                    // Exibir os dados da peça em cada linha da tabela
                     echo "<tr>";
+                    // Exibir a imagem na primeira coluna
+                    echo "<td><img class='img-lista' src='" . $row["Imagem"] . "' alt='Imagem da peça'></td>";
                     echo "<td>" . $row["Nome_Peca"] . "</td>";
                     echo "<td>" . $row["Fornecedor"] . "</td>";
                     echo "<td>" . $row["Valor_Compra"] . "</td>";
@@ -83,7 +87,7 @@ include '_script/lista.php';
                   }
                 } else {
                   // Se não houver linhas retornadas
-                  echo "<tr><td colspan='5'>Nenhum registro encontrado.</td></tr>";
+                  echo "<tr><td colspan='6'>Nenhum registro encontrado.</td></tr>";
                 }
                 ?>
               </tbody>

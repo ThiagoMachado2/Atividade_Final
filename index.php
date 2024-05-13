@@ -6,6 +6,7 @@
   <head>
     <meta charset="UTF-8" />
     <title>Dashboard | By Code Info</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" href="style/styles.css" />
     <!-- Font Awesome Cdn Link -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
@@ -16,6 +17,8 @@
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert2/11.1.2/sweetalert2.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="js/carousel.js"></script>
     <script src="js/cart.js"></script>
     <script src="js/ajax.js"></script>
@@ -86,7 +89,7 @@
             <form action="_script/venda.php" method="post" id="cart-form">
               <!-- Selecione a peça -->
               <label class="label-v" for="codigo_peca">Selecione a peça:</label>
-              <select id="codigo_peca" name="codigo_peca[]" required>
+              <select id="codigo_peca" name="codigo_peca[]" class="form-control" required>
                 <option value="">Selecione...</option>
                 <?php
                 $sql = "SELECT Cod_Peca, Nome_Peca, Valor_Venda, Quantidade FROM Pecas";
@@ -98,7 +101,7 @@
                 } else {
                   echo "<option value=''>Nenhuma peça encontrada</option>";
                 }
-                ?>
+                 ?>
               </select>
               <label class="label-v" for="nome_peca">Nome da Peça:</label>
               <input class="input-v" type="text" id="nome_peca" name="nome_peca[]" readonly>
@@ -113,12 +116,14 @@
               </div>
               <!-- Exibir o total da compra -->
               <div id="total-compra"></div>
-
+              
+              <div class="button-container">
               <!-- Botão Adicionar ao Carrinho -->
               <button class="btn-v" type="button" id="add-to-cart">Adicionar ao Carrinho</button>
 
               <!-- Botão Finalizar Compra -->
               <button class="btn-v" type="submit" id="finalizar-compra">Finalizar Compra</button>
+              </div>
             </form>
 
         </section>

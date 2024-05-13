@@ -1,3 +1,7 @@
+CREATE DATABASE autopecas;
+
+USE autopecas;
+
 -- Tabela para o cadastro de peças
 CREATE TABLE IF NOT EXISTS Pecas (
     Cod_Peca INT AUTO_INCREMENT PRIMARY KEY,
@@ -26,17 +30,6 @@ CREATE TABLE IF NOT EXISTS Itens_Venda (
     Quantidade INT,
     Total_Item DECIMAL(10, 2),
     FOREIGN KEY (Cod_Venda) REFERENCES Vendas(Cod_Venda),
-    FOREIGN KEY (Cod_Peca) REFERENCES Pecas(Cod_Peca)
-);
-
--- Tabela para o controle do carrinho de compras
-CREATE TABLE IF NOT EXISTS Carrinho (
-    Cod_Carrinho INT AUTO_INCREMENT PRIMARY KEY,
-    Cod_Peca INT,
-    Nome_Peca VARCHAR(100),
-    Valor_Venda DECIMAL(10, 2),
-    Quantidade INT,
-    Total_Item DECIMAL(10, 2),
     FOREIGN KEY (Cod_Peca) REFERENCES Pecas(Cod_Peca)
 );
 

@@ -178,6 +178,7 @@ a:hover {
   background: #fff;
   border-radius: 10px;
   box-shadow: 0 20px 35px rgba(0, 0, 0, 0.1);
+  overflow: auto; /* Adiciona rolagem se o conteúdo ultrapassar a altura */
 }
 
 .course-box ul {
@@ -409,14 +410,34 @@ select,
 }
 
 .btn-v{
-  width: 100%;
-  padding: 10px;
-  margin-top: 15px;
+  width: auto; /* Defina a largura dos botões como automática */
+  padding: 10px; /* Adicione um pouco de espaço interno */
+  margin-top: 25px;
+  text-align: center;
   background-color: #4caf50;
+  display: inline-block;
   color: white;
   border: none;
-  border-radius: 5px; /* Adiciona bordas arredondadas */
+  border-radius: 9px; /* Adiciona bordas arredondadas */
   cursor: pointer;
+}
+
+#add-to-cart {
+  width: auto;
+  padding: 10px;
+  margin-top: 25px;
+  text-align: center;
+  display: inline-block;
+  border-radius: 9px;
+  border: none;
+  cursor: pointer;
+  background-color: #007bff; /* Azul */
+  color: #fff; /* Texto branco */
+}
+
+
+#add-to-cart:hover {
+  background-color: #0069d9; /* Azul escuro */
 }
 
 .btn-v:hover{
@@ -439,4 +460,24 @@ select,
   margin-top: 20px;
   margin-bottom: 30px; /* Adiciona margem inferior para separação dos botões */
   font-weight: bold;
+}
+
+.course-box .button-container {
+  text-align: center; /* Centralize os botões */
+}
+
+.card .card-image img {
+  max-width: 100%; /* Define a largura máxima da imagem como 100% do contêiner pai */
+  height: auto; /* Garante que a altura seja ajustada automaticamente para manter a proporção */
+  display: block; /* Garante que a imagem não tenha espaços em branco abaixo */
+  margin: 0 auto; /* Centraliza a imagem horizontalmente */
+  max-height: 100px; /* Define uma altura máxima para as imagens */
+}
+
+.img-lista {
+  max-width: 100%; /* Define a largura máxima da imagem como 100% do contêiner pai */
+  height: auto; /* Garante que a altura seja ajustada automaticamente para manter a proporção */
+  display: block; /* Garante que a imagem não tenha espaços em branco abaixo */
+  margin: 0 auto; /* Centraliza a imagem horizontalmente */
+  max-height: 100px; /* Define uma altura máxima para as imagens */
 }
