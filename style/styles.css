@@ -124,42 +124,47 @@ a:hover {
   }
 
   .main-skills .card {
-    width: 150px; /* Reduzi o tamanho dos cards */
-    height: 250px ;
+    width: 200px; /* Aumenta um pouco o tamanho dos cards */
+    height: 300px; /* Ajusta a altura dos cards */
     margin: 10px;
     background: #fff;
     text-align: center;
-    border-radius: 20px;
-    padding: 10px;
-    box-shadow: 0 20px 35px rgba(0, 0, 0, 0.1);
+    border-radius: 20px; /* Adiciona bordas arredondadas */
+    padding: 20px; /* Aumenta o espaçamento interno */
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1); /* Ajusta a sombra */
   }
-
-.main-skills .card h3 {
-  margin: 10px;
-  text-transform: capitalize;
-}
-
-.main-skills .card p {
-  font-size: 12px;
-}
-
-.main-skills .card button {
-  background: orangered;
-  color: #fff;
-  padding: 7px 15px;
-  border-radius: 10px;
-  margin-top: 15px;
-  cursor: pointer;
-}
-
-.main-skills .card button:hover {
-  background: rgba(223, 70, 15, 0.856);
-}
-
-.main-skills .card i {
-  font-size: 22px;
-  padding: 10px;
-}
+  
+  .card h3,
+  .card p {
+    margin: 10px 0; /* Adiciona um espaçamento entre o texto e a borda do card */
+  }
+  
+  .card .card-image {
+    width: 100%; /* Ajusta a largura da imagem para ocupar todo o espaço disponível */
+    height: 150px; /* Define uma altura fixa para a imagem */
+    overflow: hidden; /* Oculta qualquer parte da imagem que exceda as dimensões do card */
+    border-radius: 10px; /* Adiciona bordas arredondadas à imagem */
+  }
+  
+  .card .card-image img {
+    width: 100%; /* Garante que a imagem ocupe toda a largura do contêiner pai */
+    height: auto; /* Garante que a altura seja ajustada automaticamente para manter a proporção */
+    display: block; /* Garante que a imagem não tenha espaços em branco abaixo */
+  }
+  
+  .card button {
+    background: orangered;
+    color: #fff;
+    padding: 7px 15px;
+    border-radius: 10px;
+    margin-top: 15px;
+    cursor: pointer;
+    border: none; /* Remove a borda do botão */
+  }
+  
+  .card button:hover {
+    background: rgba(223, 70, 15, 0.856);
+  }
 
 /* Courses */
 .main-course {
@@ -172,13 +177,27 @@ a:hover {
   padding: 20px; /* Adicione algum preenchimento interno para separar o formulário das bordas */
   border: 1px solid #ddd; /* Adicione uma borda para uma melhor visualização */
   width: 100%;
-  height: 650px;
+  height: 750px;
   padding: 10px 10px 30px 10px;
   margin-top: 10px;
   background: #fff;
   border-radius: 10px;
   box-shadow: 0 20px 35px rgba(0, 0, 0, 0.1);
-  overflow: auto; /* Adiciona rolagem se o conteúdo ultrapassar a altura */
+  /* overflow: auto; Adiciona rolagem se o conteúdo ultrapassar a altura */
+}
+
+.course-box-list{
+    margin: 0 auto;
+    padding: 20px; /* Adicione algum preenchimento interno para separar o formulário das bordas */
+    border: 1px solid #ddd; /* Adicione uma borda para uma melhor visualização */
+    width: 100%;
+    height: 1050px;
+    padding: 10px 10px 30px 10px;
+    margin-top: 10px;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 20px 35px rgba(0, 0, 0, 0.1);
+    overflow: auto; /* Adiciona rolagem se o conteúdo ultrapassar a altura */
 }
 
 .course-box ul {
@@ -446,7 +465,10 @@ select,
 
 #cart-items {
   margin-top: 20px;
+  max-height: 200px; /* Defina uma altura máxima para a seção de itens do carrinho */
+  overflow-y: auto; /* Adicione uma barra de rolagem vertical apenas quando os itens excederem a altura máxima */
 }
+
 
 .cart-item {
   margin-bottom: 10px;
@@ -458,8 +480,9 @@ select,
 
 #total-compra {
   margin-top: 20px;
-  margin-bottom: 30px; /* Adiciona margem inferior para separação dos botões */
   font-weight: bold;
+  max-height: 50px; /* Defina uma altura máxima para o total da compra */
+  overflow-y: auto; /* Adicione uma barra de rolagem vertical apenas quando o total exceder a altura máxima */
 }
 
 .course-box .button-container {
@@ -480,4 +503,269 @@ select,
   display: block; /* Garante que a imagem não tenha espaços em branco abaixo */
   margin: 0 auto; /* Centraliza a imagem horizontalmente */
   max-height: 100px; /* Define uma altura máxima para as imagens */
+}
+
+
+/*===== GOOGLE FONTS =====*/
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap");
+
+/*===== VARIABLES CSS =====*/
+:root{
+  --header-height: 3rem;
+
+  /*===== Colors =====*/
+  --first-color: #3E0E12;
+  --first-color-dark: #2F0A0D;
+  --text-color: #524748;
+  --first-color-light: #7B6F71;
+  --first-color-lighten: #FBF9F9;
+  --tea-rose-red: #DFAEACff;
+  --white: #FBFCFDff;
+  --white-2: #FEFEFEff;
+  --persian-red: #D42B2Eff;
+  --savoy-blue: #516BBAff;
+  --black: #000000ff;
+  --rosa:   #fe6dbc;
+  --azul-neon: #2effff;
+
+  /*===== Font and typography =====*/
+  --body-font: 'Poppins', sans-serif;
+  --biggest-font-size: 2.5rem;
+  --h1-font-size: 1.5rem;
+  --h2-font-size: 1.25rem;
+  --h3-font-size: 1.125rem;
+  --normal-font-size: .938rem;
+  --small-font-size: .813rem;
+  --smaller-font-size: .75rem;
+
+  /*===== Font weight =====*/
+  --font-medium: 500;
+  --font-semi-bold: 600;
+  --font-bold: 700;
+
+  /*===== Margins =====*/
+  --mb-1: .5rem;
+  --mb-2: 1rem;
+  --mb-3: 1.5rem;
+  --mb-4: 2rem;
+  --mb-5: 2.5rem;
+  --mb-6: 3rem;
+
+  /*===== z index =====*/
+  --z-normal: 1;
+  --z-tooltip: 10;
+  --z-fixed: 100;
+}
+  
+@media screen and (min-width: 768px){
+  :root{
+    --biggest-font-size: 4.5rem;
+    --h1-font-size: 2.25rem;
+    --h2-font-size: 1.5rem;
+    --h3-font-size: 1.25rem;
+    --normal-font-size: 1rem;
+    --small-font-size: .875rem;
+    --smaller-font-size: .813rem;
+  }
+}
+
+/*===== BASE =====*/
+*,::before,::after{
+  box-sizing: border-box;
+}
+
+html{
+  scroll-behavior: smooth;
+}
+
+h1,h2,h3,ul,p{
+  margin: 0;
+}
+
+h2,h3{
+  font-weight: var(--font-semi-bold);
+}
+
+ul{
+  padding: 0;
+  list-style: none;
+}
+
+a{
+  text-decoration: none;
+}
+
+img{
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/*===== CLASS CSS =====*/
+.section {
+  padding: 4rem 0 2rem;
+}
+
+.section-title, .section-subtitle {
+  text-align: center;
+}
+
+.section-title {
+  font-size: var(--h1-font-size);
+  color: var(--first-color);
+  margin-bottom: var(--mb-3);
+}
+
+.section-subtitle {
+  display: block;
+  font-size: var(--smaller-font-size);
+  font-weight: var(--font-semi-bold);
+}
+
+/*===== LAYOUT =====*/
+.bd-container {
+  max-width: 1024px;
+  width: calc(100% - 2rem);
+  margin-left: var(--mb-2);
+  margin-right: var(--mb-2);
+}
+
+.bd-grid {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.l-header {
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: var(--z-fixed);
+  background-color: #000;
+}
+
+/*===== FOOTER =====*/
+.footer {
+  background-color: var(--savoy-blue);
+  color: var(--first-color-lighten);
+  text-align: center;
+}
+
+.footer__container {
+  padding: 3rem 0;
+}
+
+.footer__title {
+  font-size: var(--h1-font-size);
+  margin-bottom: var(--mb-1);
+  font-weight: var(--font-semi-bold);
+}
+
+.footer__description {
+  margin-bottom: var(--mb-3);
+}
+
+.footer__social {
+  display: flex;
+  justify-content: center;
+  margin-bottom: var(--mb-6);
+}
+
+.footer__social {
+  display: flex;
+  justify-content: center;
+  margin-bottom: var(--mb-6);
+}
+
+.footer__link {
+  font-size: 1.2rem; /* Reduzindo o tamanho dos ícones */
+  color: var(--first-color-lighten);
+  margin: 0 var(--mb-2) 0 var(--mb-2); /* Reduzindo ainda mais a margem horizontal */
+  transition: .3s;
+}
+
+.footer__link:hover {
+  color: var(--first-color-light);
+}
+
+.footer__copy {
+  font-size: var(--smaller-font-size);
+  color: var(--black);
+}
+
+/*===== MEDIA QUERIES =====*/
+@media screen and (min-width: 768px) {
+  body {
+    margin: 0;
+  }
+}
+
+@media screen and (min-width: 1024px) {
+  .bd-container {
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  nav {
+    width: 100%; /* Faz a barra de navegação ocupar toda a largura da tela */
+    height: auto; /* Ajusta a altura automaticamente conforme o conteúdo */
+    overflow-y: auto; /* Adiciona rolagem vertical se o conteúdo ultrapassar a altura */
+  }
+
+  .logo {
+    margin: 10px auto; /* Centraliza o logo na tela */
+  }
+
+  .nav-item {
+    display: none; /* Esconde os textos dos itens de navegação */
+  }
+
+  .nav-item:nth-child(1) {
+    display: block; /* Exibe apenas o logo em telas pequenas */
+  }
+
+  .nav-item a {
+    padding: 15px; /* Adiciona mais espaço para toque em dispositivos móveis */
+  }
+
+  .main-top {
+    flex-direction: column; /* Alinha os elementos verticalmente */
+    align-items: center; /* Centraliza os elementos */
+    text-align: center; /* Centraliza o texto */
+  }
+
+  .main-top i {
+    position: static; /* Remove a posição absoluta */
+    margin: 20px auto; /* Centraliza o ícone */
+  }
+
+  .main-skills {
+    flex-wrap: wrap; /* Faz com que os cartões quebrem linha se não couberem */
+    justify-content: center; /* Centraliza os cartões */
+  }
+
+  .card {
+    width: 45%; /* Reduz o tamanho dos cartões para caber em telas menores */
+  }
+
+  .main-course {
+    height: auto; /* Ajusta a altura automaticamente conforme o conteúdo */
+  }
+
+  .course-box {
+    height: auto; /* Ajusta a altura automaticamente conforme o conteúdo */
+    overflow: visible; /* Remove a rolagem vertical */
+  }
+
+  .course-box-list {
+    height: auto; /* Ajusta a altura automaticamente conforme o conteúdo */
+    overflow: visible; /* Remove a rolagem vertical */
+  }
+
+  .course-box-cad {
+    height: auto; /* Ajusta a altura automaticamente conforme o conteúdo */
+    overflow: visible; /* Remove a rolagem vertical */
+  }
 }

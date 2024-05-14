@@ -7,6 +7,21 @@ $(document).ready(function() {
       $('#nome_peca').val(nome_peca);
       $('#valor_venda').val(valor_venda);
     });
+
+
+    // Manipulador de evento para adicionar ao carrinho a partir do botão nos cards
+    $(document).on('click', '.add-to-cart-btn', function() {
+      var codigo_peca = $(this).data('cod-peca');
+      var nome_peca = $(this).data('nome-peca');
+      var valor_venda = $(this).data('valor-venda');
+      var quantidade_disponivel = parseInt($(this).data('quantidade'));
+      var quantidade = 1; // Você pode definir uma quantidade padrão aqui se desejar
+      var total = valor_venda * quantidade;
+
+      // Adicionar ao carrinho
+      addToCart(codigo_peca, nome_peca, valor_venda, quantidade, total);
+      updateTotal();
+  });
     
     // Manipulador de evento para adicionar ao carrinho
     $('#add-to-cart').click(function() {
