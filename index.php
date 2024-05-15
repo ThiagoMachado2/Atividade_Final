@@ -18,13 +18,11 @@
     <!--  Box Icons -->
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert2/11.1.2/sweetalert2.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <script src="C:\xampp\htdocs\Atividade_Final\js\alertavenda.js"></script>
     <script src="js/carousel.js"></script>
     <script src="js/cart.js"></script>
     <script src="js/ajax.js"></script>
-    <script src="js/calendario.js"></script>
   </head>
 
   <body>
@@ -56,7 +54,6 @@
       <section class="main">
         <div class="main-top">
           <h1>Produtos</h1>
-          <i class="fas fa-cart-shopping"></i>
         </div>
         <div class="main-skills">
           <div class="carousel">
@@ -88,12 +85,12 @@
           </div>
         </div>
         <section class="main-course">
-          <h1>Tela de finalização da compra</h1>
+          <h1>finalização da compra</h1>
           <div class="course-box">
             <form action="_script/venda.php" method="post" id="cart-form">
               <!-- Selecione a peça -->
               <label class="label-v" for="codigo_peca">Selecione a peça:</label>
-              <select id="codigo_peca" name="codigo_peca[]" class="form-control" >
+              <select id="codigo_peca" name="codigo_peca[]" class="form-control">
                 <option value="">Selecione...</option>
                 <?php
                 $sql = "SELECT Cod_Peca, Nome_Peca, Valor_Venda, Quantidade FROM Pecas";
@@ -112,7 +109,7 @@
               <label class="label-v" for="valor_venda">Valor de Venda:</label>
               <input type="number" id="valor_venda" name="valor_venda[]" step="0.01" readonly>
               <label class="label-v" for="quantidade">Quantidade:</label>
-              <input class="input-v" type="number" id="quantidade" name="quantidade[]" >
+              <input class="input-v" type="number" id="quantidade" name="quantidade[]">
 
               <!-- Contêiner para exibir os itens no carrinho -->
               <div id="cart-items">

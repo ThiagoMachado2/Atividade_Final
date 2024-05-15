@@ -1,3 +1,5 @@
+<html>
+<body>
 <?php
 include 'database.php';
 // Definir o fuso horário para São Paulo
@@ -98,3 +100,5 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $conn->close();
 }
 ?>
+</body>
+</html>

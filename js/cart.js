@@ -60,3 +60,14 @@ $(document).ready(function() {
     $('#total-compra').text('Total da compra: R$ ' + totalCompra.toFixed(2));
   }
   
+  $(document).ready(function() {
+    // Evento de clique para o botão "Selecionar"
+    $('.select-button').click(function() {
+      // Preencher os campos do formulário com os dados da peça selecionada
+      $('#nome').val($(this).data('nome'));
+      $('#fornecedor').val($(this).data('fornecedor'));
+      $('#valor_compra').val($(this).data('valor-compra'));
+      $('#valor_venda').val($(this).data('valor-venda'));
+      $('#quantidade').val($(this).data('quantidade'));
+    });
+  });

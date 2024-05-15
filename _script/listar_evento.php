@@ -4,13 +4,10 @@ include 'database.php';
 // Query para recuperar os eventos
 $query_events = "SELECT id, title, color, start, end FROM events";
 
-// Prepara a Query
 $result_events = $conn->prepare($query_events);
 
-// Executa a Query
 $result_events->execute();
 
-// Obter o resultado
 $result_set = $result_events->get_result();
 
 // Criando o array que recebe os eventos

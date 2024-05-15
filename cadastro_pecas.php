@@ -14,8 +14,6 @@
     <!--  Box Icons -->
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert2/11.1.2/sweetalert2.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="js/carousel.js"></script>
     <script src="js/cart.js"></script>
     <script src="js/ajax.js"></script>
@@ -51,7 +49,6 @@
       <section class="main">
         <div class="main-top">
           <h1>Produtos</h1>
-          <i class="fas fa-user-cog"></i>
         </div>
         <div class="main-skills">
           <div class="carousel">
@@ -72,6 +69,7 @@
                 echo '</div>';
                 echo '<h3>' . $row["Nome_Peca"] . '</h3>';
                 echo '<p>R$ ' . $row["Valor_Venda"] . '</p>';
+                echo '<button class="select-button" data-nome="' . $row["Nome_Peca"] . '" data-fornecedor="' . $row["Fornecedor"] . '" data-valor-compra="' . $row["Valor_Compra"] . '" data-valor-venda="' . $row["Valor_Venda"] . '" data-quantidade="' . $row["Quantidade"] . '">Selecionar</button>';
                 echo '</div>';
               }
             } else {
